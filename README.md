@@ -1,20 +1,75 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# 🟣 THE HERTA - 天才俱乐部 #83 私人终端
 
-# Run and deploy your AI Studio app
+![Version](https://img.shields.io/badge/Version-1.0.0--Emanator-blueviolet)
+![Tech](https://img.shields.io/badge/Tech-React_%7C_Tailwind_%7C_LLM-purple)
 
-This contains everything you need to run your app locally.
+这是一个基于《崩坏：星穹铁道》中“大黑塔”（智识令使真身）形象设计的沉浸式交互网页。本项目旨在通过高精度的 UI 设计、动效和 AI 技术，还原这位天才俱乐部成员的私人办公终端。
 
-View your app in AI Studio: https://ai.studio/apps/drive/1VPPTqRpngGOyNVviLI3Ur4NFDn_azzpg
+> “你对这东西感兴趣？看来你的好奇心比你的智商要稍微高那么一点点。听好了，我只演示一次，因为我的卡路里很宝贵。” —— 黑塔
 
-## Run Locally
+---
 
-**Prerequisites:**  Node.js
+## 🌌 核心功能模块
 
+### 1. 🗄️ 历史归档 (Archive)
+收录了大量发生在主线剧情（空间站被入侵）之前的历史记录。包括：
+- **起源阶段**：孤立波理论的破解、加入天才俱乐部的初衷。
+- **科研日志**：返老还童计划、人偶技术的初步构想。
+- **空间站建设**：与艾丝妲、阿兰的早期接触，以及空间站的设计初衷。
+- **模拟宇宙**：与阮·梅、螺丝咕姆等天才的早期协作草案。
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+### 2. 💬 通讯终端 (Terminal)
+内置基于大模型（LLM）驱动的“黑塔”人格模拟系统：
+- **傲慢的人设**：她会鄙夷无意义的寒暄，只对星神、虚数和未知的科研话题感兴趣。
+- **自定义配置**：支持 OpenAI 兼容格式的 API 接入，可在终端内直接配置 Endpoint 与模型参数。
+- **沉浸式交互**：完全脱离“AI 助手”的机械感，还原那个毒舌、效率至上且充满优越感的天才。
+
+### 3. 👤 角色档案 (Profile)
+详尽展示“令使级”黑塔的属性与能力：
+- **数据面板**：全方位的战斗参数、星魂（Eidolons）描述及行迹（Traces）。
+- **令使真身**：区别于空间站的人偶，这里展示的是能够重绘星图、驾驭虚数的真身数据。
+- **链接矩阵**：一键跳转至官方 HoYoWiki 深度查阅。
+
+### 4. 🔮 奇物实验室 (Curio)
+利用 AI 技术动态生成模拟宇宙中的“奇物”：
+- **随机演算**：实时生成具有讽刺性评价的稀奇古怪物品。
+- **黑塔锐评**：每一件奇物下方都附带黑塔本人的毒舌点评。
+
+### 5. 🔨 转圈协议 (Kuru Kuru)
+一个解压的互动彩蛋模块：
+- 支持手动/自动旋转人偶。
+- 模拟“转圈圈”协议，为那些被淘汰的人偶产生最后的一点动能价值。
+
+---
+
+## 🛠️ 技术栈与亮点
+
+- **前端框架**：`React 19`
+- **样式方案**：`Tailwind CSS` 与高度自定义的 CSS 变量。
+- **图标库**：`Lucide React`
+- **视觉效果**：
+  - **Canvas 粒子系统**：模拟虚数空间的背景律动。
+  - **Spotlight 效果**：卡片悬浮时的动态光束追踪。
+  - **响应式导航**：桌面端采用悬浮胶囊设计，移动端切换为底部 Tab Bar，确保全平台体验。
+- **智能集成**：原生 OpenAI API 协议支持，兼容多种大模型后端。
+
+---
+
+## 🚀 访问与使用
+
+1. **环境要求**：支持 ES 模块的现代浏览器。
+2. **终端激活**：
+   - 进入 **Terminal** 页面。
+   - 点击右上角的“齿轮”图标。
+   - 输入您的 API Key（数据仅保存在本地 `localStorage`）。
+   - 开始接受天才的“毒舌”教导。
+
+---
+
+## 🖋️ 设计理念
+
+本网页采用了**深紫色（Herta Base）**作为基调，点缀以**金色（Herta Gold）**与**亮紫色（Herta Accent）**。整体风格融合了赛博朋克终端的硬朗与智识令使的优雅。所有的交互动效均遵循“高效、精准、科技感”原则，正如黑塔本人对学术研究的要求一样。
+
+---
+
+*“记录结束。你还在看？如果看完就赶紧离开，别挡着模拟宇宙的计算频率。”*

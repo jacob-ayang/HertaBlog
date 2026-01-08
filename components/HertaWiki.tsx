@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Hexagon, Sparkles, Database, BrainCircuit, Star, ArrowRight, Share2, History, Users, Sword, Shield, Zap, Target, Scroll, Book, Quote, Crown } from 'lucide-react';
+import { Hexagon, Sparkles, Database, BrainCircuit, Star, ArrowRight, Share2, History, Users, Sword, Shield, Zap, Target, Scroll, Book, Quote, Crown, ExternalLink } from 'lucide-react';
 
 type WikiTab = 'overview' | 'combat' | 'eidolons' | 'archive';
 
@@ -17,7 +17,6 @@ const HertaWiki: React.FC = () => {
         <div className="relative group shrink-0">
           <div className="w-40 h-40 md:w-48 md:h-48 rounded-full border-4 border-herta-gold p-1 relative overflow-hidden bg-black/50 shadow-[0_0_30px_rgba(251,191,36,0.3)] transition-all duration-500 group-hover:shadow-[0_0_50px_rgba(251,191,36,0.6)]">
              <div className="w-full h-full rounded-full bg-gradient-to-b from-purple-900 to-black flex items-center justify-center overflow-hidden relative">
-                {/* Image Avatar */}
                 <img 
                     src="https://s3.bmp.ovh/imgs/2026/01/08/f58c842bd680bbd1.png" 
                     alt="The Herta" 
@@ -94,9 +93,19 @@ const HertaWiki: React.FC = () => {
                 {/* Left Column: Stats */}
                 <div className="md:col-span-8 space-y-6">
                     <div className="spotlight-card rounded-xl p-6 border-herta-gold/20">
-                        <h3 className="text-xl font-bold tech-font text-white mb-4 flex items-center gap-2">
-                            <Users className="w-5 h-5 text-herta-gold" /> EMANATOR PROFILE
-                        </h3>
+                        <div className="flex justify-between items-start mb-4">
+                            <h3 className="text-xl font-bold tech-font text-white flex items-center gap-2">
+                                <Users className="w-5 h-5 text-herta-gold" /> EMANATOR PROFILE
+                            </h3>
+                            <a 
+                                href="https://wiki.hoyolab.com/pc/hsr/entry/3285" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="text-[10px] text-herta-gold hover:text-white border border-herta-gold/30 hover:bg-herta-gold/20 px-3 py-1.5 rounded flex items-center gap-2 transition-all uppercase font-bold tracking-widest"
+                            >
+                                Official Wiki <ExternalLink className="w-3 h-3" />
+                            </a>
+                        </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12 text-sm">
                             <div>
                                 <span className="block text-purple-400 text-xs font-mono uppercase mb-1">True Identity</span>

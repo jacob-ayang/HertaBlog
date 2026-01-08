@@ -618,7 +618,7 @@ const BLOG_POSTS: BlogPost[] = [
                     She created a replica of a Leviathan in the Seclusion Zone. It lasted 56 seconds before destabilizing.
                 </p>
                 <p>
-                    She left the "critters" behind. They are affectionate and taste like sugar. I should incinerate them for safety, but the researchers have adopted them. Productivity is down 12%, but serotonin levels are up 400%.
+                    She left the "critters" behind. They are affectionate and taste like sugar. I should incinerate them for safety, but the researchers have adopted them. Productivity is down 12%, but serotonin levels are up 400%。
                 </p>
             </div>
         )
@@ -1023,12 +1023,22 @@ const HertaBlog: React.FC<HertaBlogProps> = ({ onNavigate }) => {
                                 </div>
                             </div>
 
-                            <button 
-                                onClick={() => onNavigate('chat')}
-                                className="w-full py-2 bg-herta-accent/20 border border-herta-accent/50 text-herta-accent rounded hover:bg-herta-accent hover:text-white transition-all text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-2"
-                            >
-                                SEND MESSAGE <ExternalLink className="w-3 h-3" />
-                            </button>
+                            <div className="flex flex-col gap-2 w-full">
+                                <button 
+                                    onClick={() => onNavigate('chat')}
+                                    className="w-full py-2 bg-herta-accent/20 border border-herta-accent/50 text-herta-accent rounded hover:bg-herta-accent hover:text-white transition-all text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-2"
+                                >
+                                    SEND MESSAGE <ExternalLink className="w-3 h-3" />
+                                </button>
+                                <a 
+                                    href="https://wiki.hoyolab.com/pc/hsr/entry/3285"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="w-full py-2 bg-purple-900/40 border border-purple-500/30 text-purple-300 rounded hover:bg-herta-gold/10 hover:text-herta-gold hover:border-herta-gold/50 transition-all text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-2"
+                                >
+                                    VIEW HOYOWIKI <ExternalLink className="w-3 h-3" />
+                                </a>
+                            </div>
                         </div>
                     </div>
 
