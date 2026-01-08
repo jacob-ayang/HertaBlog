@@ -26,30 +26,33 @@ const BLOG_POSTS: BlogPost[] = [
         title: "Theory: The Solitary Wave",
         date: "Amber Era 2122",
         category: "Origin",
-        tags: ["Lore", "Nous"],
+        tags: ["Lore", "Nous", "Mathematics"],
         content: (
             <>
                 <p>
                     I have solved it. The <strong>Solitary Wave</strong>. 
                     The scientific community on The Blue is in an uproar. They call it a miracle.
+                    I call it basic arithmetic they were too blind to see.
                 </p>
             </>
         ),
         fullContent: (
             <div className="space-y-4 text-sm md:text-base leading-relaxed">
                 <p className="font-mono text-xs text-purple-400 mb-4 border-b border-purple-500/30 pb-2">
-                    ARCHIVE ID: 0001-ALPHA // LOCATION: THE BLUE
+                    ARCHIVE ID: 0001-ALPHA // LOCATION: THE BLUE // CLASSIFICATION: TOP SECRET
                 </p>
                 <p>
-                    The "experts" here look at energy dissipation models and see chaos. I see a pattern. It was staring them in the face for decades.
+                    The "experts" on The Blue have spent three centuries staring at energy dissipation models. They saw chaos where I saw an elegant, singular variable. They treated the universe like a leaky bucket; I realized the bucket itself is a fluid.
                 </p>
                 <p>
-                    I applied the wave packet theory to imaginary number space. The result is undeniable: information can be preserved indefinitely without entropy loss if isolated within a specific frequency. It effectively proves that "forgetting" is a flaw of biological hardware, not a law of physics.
+                    By applying wave packet theory to non-Euclidean imaginary number space, the solution materialized instantly. Information doesn't decay—it simply shifts phase. I've proven that the 'Heat Death' of the universe is merely a failure of perspective. If you move the observer outside the system, the energy remains perfectly balanced.
                 </p>
                 <p>
-                    <strong>Addendum:</strong><br/>
-                    Something... looked at me when I wrote the final variable. It wasn't a person. It was a gaze from across the star rail. It felt cold, metallic, and infinitely dense. 
-                    <br/><span className="text-herta-gold">Nous.</span>
+                    The equations are so beautiful they make my eyes hurt. Or perhaps that's just the biological limitation of these optic nerves. I've spent forty-eight hours straight refining the proof. The Blue's Council of Elders wants me to present it. I think I'll just post it on the public net and watch them struggle to read the first page.
+                </p>
+                <p>
+                    <strong>Addendum: The Gaze</strong><br/>
+                    As I wrote the final punctuation of the proof, the air in my lab turned into liquid gold. It wasn't light; it was *data*. A massive, cold, metallic eye opened in the center of the room. It didn't speak. It didn't need to. It was <span className="text-herta-gold font-bold">Nous</span>. In that moment, I realized my planet was a grain of sand, and I had just learned to describe the ocean.
                 </p>
             </div>
         )
@@ -59,33 +62,64 @@ const BLOG_POSTS: BlogPost[] = [
         title: "Induction: Member #83",
         date: "Amber Era 2125",
         category: "Genius Society",
-        tags: ["Genius Society", "Memoirs"],
+        tags: ["Genius Society", "Memoirs", "Nous"],
         content: (
             <>
                 <p>
                     The invitation arrived. No ceremony, just a key.
-                    Member #83.
-                    I am leaving The Blue. It is too small for me now.
+                    Member #83. 
+                    I'm finally leaving this backwater planet. The Blue is far too small for a mind of my caliber.
                 </p>
             </>
         ),
         fullContent: (
             <div className="space-y-4 text-sm md:text-base leading-relaxed">
                 <p>
-                    Zandar's club. The Genius Society.
+                    Zandar's club. The Genius Society. I expected a gala, or perhaps a test. Instead, a delivery drone from the IPC (shaking with fear, mind you) handed me a "key."
                 </p>
                 <p>
-                    I reviewed the roster.
-                    <br/>#27 Rubert I (Deceased, thankfully).
-                    <br/>#4 Polka Kakamond (Status: Unknown/Terrifying).
-                    <br/>#76 Screwllum (Active).
-                    <br/>#81 Ruan Mei (Active).
+                    It wasn't a key to a room. It was a key to a frequency. I turned it, and the world expanded. Suddenly, I could see the star rails as if they were drawn in charcoal across the sky.
                 </p>
                 <p>
-                    The Blue is 71% water and 100% noise. The Society offers resources: the IPC's budget, the Intelligentsia Guild's envy, and the silence of deep space.
+                    I reviewed the historical records of my predecessors. 
+                    <br/>#27 Rubert I: A genius, but too obsessed with deleting biological life. Inefficient. 
+                    <br/>#76 Screwllum: A machine with the soul of a poet. He sent me a welcoming message encoded in gravitational waves. Quite clever. 
+                    <br/>#81 Ruan Mei: She seems... biological. Too biological. I suspect our research will clash or harmonize in ways the universe isn't prepared for.
                 </p>
                 <p>
-                    I have accepted. Obviously.
+                    Being #83 means I am the newest variable in an equation that has existed since the dawn of the Path. I find the number acceptable. Prime numbers are overused by egoists anyway.
+                </p>
+            </div>
+        )
+    },
+    {
+        id: 'soc-04',
+        title: "Evaluation: Screwllum's Logic",
+        date: "Amber Era 2132",
+        category: "Genius Society",
+        tags: ["Screwllum", "Logic", "Debate"],
+        content: (
+            <>
+                <p>
+                    Argued with #76 about the nature of consciousness. 
+                    He claims silicon can host a soul. I claim a soul is just a bug in biological software. 
+                    He won the debate, but I have the better snacks.
+                </p>
+            </>
+        ),
+        fullContent: (
+            <div className="space-y-4 text-sm md:text-base leading-relaxed">
+                <p>
+                    Screwllum visited Planet Herta today. He brought a digital bouquet that changes color based on my mood. It's been stuck on "Annoyed Purple" for three hours.
+                </p>
+                <p>
+                    We discussed the "Mechanical Paradox." He believes that as a machine evolves, it develops an "extra-logical" component—a soul. I argued that his "soul" is merely a set of recursive subroutines he hasn't bothered to debug yet.
+                </p>
+                <p>
+                    He then asked me why I reversed my age. I told him it was for neuroplasticity. He smiled—at least, his mechanical shutters clicked in a way that implies a smile—and said, "Perhaps you simply missed being young." 
+                </p>
+                <p>
+                    Preposterous. Logic doesn't have a childhood. I've blocked his access to my private library for a week.
                 </p>
             </div>
         )
@@ -116,6 +150,22 @@ const BLOG_POSTS: BlogPost[] = [
                     <strong>Hypothesis:</strong> I can reverse the aging of the cells, keeping the hardware in its "peak neuroplasticity" state (adolescence), while using remote proxies for manual labor. The puppets. Yes. Why walk when I can build a machine to walk for me?
                 </p>
             </div>
+        )
+    },
+    {
+        id: 'res-04',
+        title: "Innovation: Energy Syrup v1.0",
+        date: "Amber Era 2135",
+        category: "Research",
+        tags: ["Bio-Engineering", "Efficiency"],
+        content: (
+            <>
+                <p>
+                    Eating takes 30 minutes. Chewing is a waste of jaw movement. 
+                    I've distilled a month's worth of nutrients into a single 50ml vial. 
+                    It tastes like battery acid and regret. I'll need to work on the flavor.
+                </p>
+            </>
         )
     },
     {
@@ -180,10 +230,6 @@ const BLOG_POSTS: BlogPost[] = [
             </div>
         )
     },
-
-    // =========================================================================
-    // ERA: STATION CONSTRUCTION (AE 2140s - 2150s)
-    // =========================================================================
     {
         id: 'stn-01',
         title: "Log: Construction Begins",
@@ -267,6 +313,21 @@ const BLOG_POSTS: BlogPost[] = [
         )
     },
     {
+        id: 'stn-05',
+        title: "Log: Bureaucracy is a Disease",
+        date: "Amber Era 2152",
+        category: "Space Station",
+        tags: ["IPC", "Annoyance"],
+        content: (
+            <>
+                <p>
+                    The IPC sent a 400-page safety audit for the reactor. 
+                    I incinerated it and sent the ashes back with a note: "The reactor is safe. Your paperwork is a fire hazard."
+                </p>
+            </>
+        )
+    },
+    {
         id: 'stn-02',
         title: "Personnel: Asta",
         date: "Amber Era 2154",
@@ -325,6 +386,23 @@ const BLOG_POSTS: BlogPost[] = [
                     I proposed a closed-loop universe to Screwllum.
                     He asked about the ethics. I asked about the processing power.
                     We are building a god-cage.
+                </p>
+            </>
+        )
+    },
+    {
+        id: 'curio-02',
+        title: "Reflections: The Doctor's Robe",
+        date: "Amber Era 2156",
+        category: "Research",
+        tags: ["Curios", "Entropy"],
+        content: (
+            <>
+                <p>
+                    Studying a robe that regenerates energy from the wearer's focus. 
+                    It works, but it's incredibly itchy. 
+                    I've decided to let a puppet wear it and record the data. 
+                    Being a Genius means never having to endure an itch.
                 </p>
             </>
         )
