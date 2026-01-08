@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Bot, User, Terminal, Loader2 } from 'lucide-react';
-import { sendMessageToHerta } from '../services/geminiService';
-import { ChatMessage, SimulatedUniverseState } from '../types';
+import { Send, Bot, User, Terminal, Loader2, Sparkles, Settings, X, Save, Key, Cpu, Globe } from 'lucide-react';
+import { sendMessageToHerta, getSettings, saveSettings } from '../services/geminiService';
+import { ChatMessage, SimulatedUniverseState, ChatSettings } from '../types';
 
 const SUGGESTED_QUESTIONS = [
     "Who are you really?",
@@ -22,7 +22,12 @@ const HertaChat: React.FC = () => {
   const [status, setStatus] = useState<SimulatedUniverseState>(SimulatedUniverseState.IDLE);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  // Settings State
+  const [showSettings, setShowSettings] = useState(false);
+  const [config, setConfig] = useState<ChatSettings>({ endpoint: '', apiKey: '', model: '' });
+
   useEffect(() => {
+    setConfig(getSettings());
     scrollToBottom();
   }, [messages]);
 
@@ -32,6 +37,16 @@ const HertaChat: React.FC = () => {
 
   const handleSend = async (text: string) => {
     if (!text.trim() || status === SimulatedUniverseState.CALCULATING) return;
+
+    if (!config.apiKey) {
+        setMessages(prev => [...prev, {
+            id: Date.now().toString(),
+            role: 'model',
+            text: "ACCESS DENIED: API Key Missing. Configure the terminal settings (Gear Icon) to proceed."
+        }]);
+        setShowSettings(true);
+        return;
+    }
 
     const userMsg: ChatMessage = {
       id: Date.now().toString(),
@@ -44,6 +59,7 @@ const HertaChat: React.FC = () => {
     setStatus(SimulatedUniverseState.CALCULATING);
 
     try {
+      // Pass existing history for context
       const responseText = await sendMessageToHerta(userMsg.text, messages);
       
       const modelMsg: ChatMessage = {
@@ -65,6 +81,16 @@ const HertaChat: React.FC = () => {
     }
   };
 
+  const handleSaveSettings = () => {
+    saveSettings(config);
+    setShowSettings(false);
+    setMessages(prev => [...prev, {
+        id: Date.now().toString(),
+        role: 'model',
+        text: `SYSTEM: Configuration updated. Endpoint: ${config.endpoint || 'Default'}.`
+    }]);
+  };
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -74,6 +100,73 @@ const HertaChat: React.FC = () => {
 
   return (
     <div className="w-full max-w-4xl mx-auto h-[75vh] md:h-[600px] flex gap-4 relative">
+        
+        {/* Settings Modal */}
+        {showSettings && (
+            <div className="absolute inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm rounded-xl animate-in fade-in duration-200">
+                <div className="w-full max-w-md bg-herta-dark border border-purple-500/50 rounded-xl shadow-2xl p-6 relative">
+                    <button onClick={() => setShowSettings(false)} className="absolute top-4 right-4 text-purple-400 hover:text-white">
+                        <X className="w-5 h-5" />
+                    </button>
+                    
+                    <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2 tech-font">
+                        <Settings className="w-5 h-5 text-herta-gold" /> TERMINAL CONFIG
+                    </h3>
+                    
+                    <div className="space-y-4">
+                        <div>
+                            <label className="block text-xs font-mono text-purple-400 mb-1 flex items-center gap-2">
+                                <Globe className="w-3 h-3" /> API ENDPOINT
+                            </label>
+                            <input 
+                                type="text" 
+                                value={config.endpoint}
+                                onChange={(e) => setConfig({...config, endpoint: e.target.value})}
+                                placeholder="https://api.openai.com/v1"
+                                className="w-full bg-black/50 border border-purple-500/30 rounded p-2 text-sm text-white focus:border-herta-accent outline-none font-mono"
+                            />
+                            <p className="text-[10px] text-gray-400 mt-1 leading-snug">
+                                Default: Base URL (e.g. <span className="text-purple-300">.../v1</span>). 
+                            </p>
+                        </div>
+
+                        <div>
+                            <label className="block text-xs font-mono text-purple-400 mb-1 flex items-center gap-2">
+                                <Key className="w-3 h-3" /> API KEY
+                            </label>
+                            <input 
+                                type="password" 
+                                value={config.apiKey}
+                                onChange={(e) => setConfig({...config, apiKey: e.target.value})}
+                                placeholder="sk-..."
+                                className="w-full bg-black/50 border border-purple-500/30 rounded p-2 text-sm text-white focus:border-herta-accent outline-none font-mono"
+                            />
+                        </div>
+
+                        <div>
+                            <label className="block text-xs font-mono text-purple-400 mb-1 flex items-center gap-2">
+                                <Cpu className="w-3 h-3" /> MODEL NAME
+                            </label>
+                            <input 
+                                type="text" 
+                                value={config.model}
+                                onChange={(e) => setConfig({...config, model: e.target.value})}
+                                placeholder="gpt-4o, deepseek-chat, gemini-pro..."
+                                className="w-full bg-black/50 border border-purple-500/30 rounded p-2 text-sm text-white focus:border-herta-accent outline-none font-mono"
+                            />
+                        </div>
+
+                        <button 
+                            onClick={handleSaveSettings}
+                            className="w-full mt-4 bg-herta-accent hover:bg-purple-500 text-white font-bold py-2 rounded flex items-center justify-center gap-2 transition-all"
+                        >
+                            <Save className="w-4 h-4" /> SAVE CONFIGURATION
+                        </button>
+                    </div>
+                </div>
+            </div>
+        )}
+
         {/* Main Chat Area */}
         <div className="flex-1 flex flex-col glass-panel rounded-xl overflow-hidden relative">
             {/* Header */}
@@ -85,6 +178,12 @@ const HertaChat: React.FC = () => {
                         ACCESS_TERMINAL_83
                     </span>
                 </div>
+                <button 
+                    onClick={() => setShowSettings(true)}
+                    className="p-2 hover:bg-white/10 rounded-full transition-colors text-purple-400 hover:text-white"
+                >
+                    <Settings className="w-4 h-4" />
+                </button>
             </div>
 
             {/* Messages */}

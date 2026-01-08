@@ -1,5 +1,14 @@
-import { GoogleGenAI, Type } from "@google/genai";
-import { Curio, ChatMessage } from "../types";
+import { Curio, ChatSettings, ChatMessage } from "../types";
+
+// DEFAULT SETTINGS
+const DEFAULT_SETTINGS: ChatSettings = {
+    endpoint: "https://api.openai.com/v1", // Default to OpenAI, compatible with DeepSeek/Zeabur/Local
+    apiKey: "", 
+    model: "gpt-4o" // Default placeholder
+};
+
+// STORAGE KEYS
+const STORAGE_KEY = 'herta_terminal_config';
 
 // THE GREAT HERTA PROMPT (Persona)
 const HERTA_SYSTEM_INSTRUCTION = `
@@ -36,65 +45,131 @@ const CURIO_SYSTEM_INSTRUCTION = `
 You are the **Simulated Universe Database Mainframe**.
 Your task is to generate fictional, sci-fi "Curios" or "Blessings" based on the Honkai: Star Rail universe.
 You must output **ONLY valid JSON**. 
+Do not include markdown formatting like \`\`\`json. 
+Just return the raw JSON object.
 `;
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+export const getSettings = (): ChatSettings => {
+    if (typeof window === 'undefined') return DEFAULT_SETTINGS;
+    const stored = localStorage.getItem(STORAGE_KEY);
+    return stored ? { ...DEFAULT_SETTINGS, ...JSON.parse(stored) } : DEFAULT_SETTINGS;
+};
+
+export const saveSettings = (settings: ChatSettings) => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
+};
+
+// Generic OpenAI-Compatible Completion
+const callCompletion = async (messages: any[], settings: ChatSettings, jsonMode: boolean = false, systemPrompt: string = HERTA_SYSTEM_INSTRUCTION): Promise<string> => {
+    if (!settings.apiKey) {
+        throw new Error("API Key missing. Please configure it in the settings.");
+    }
+
+    // Simple URL Handling: Always append /chat/completions if not present
+    let url = settings.endpoint.trim().replace(/\/$/, "");
+    if (!url.endsWith('/chat/completions')) {
+         url = url + "/chat/completions";
+    }
+
+    const headers: Record<string, string> = {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${settings.apiKey}`
+    };
+
+    const body: any = {
+        model: settings.model,
+        messages: [
+            { role: "system", content: systemPrompt },
+            ...messages
+        ],
+        temperature: 0.7,
+        max_tokens: 500,
+    };
+
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers,
+            body: JSON.stringify(body)
+        });
+
+        if (!response.ok) {
+            const errText = await response.text();
+            throw new Error(`API Error ${response.status}: ${errText}`);
+        }
+
+        const data = await response.json();
+        return data.choices?.[0]?.message?.content || "";
+    } catch (error) {
+        console.error("LLM Call Failed:", error);
+        throw error;
+    }
+};
 
 export const sendMessageToHerta = async (message: string, history: ChatMessage[] = []): Promise<string> => {
+    const settings = getSettings();
+    
+    // Convert internal history to OpenAI format
+    const contextMessages = history.slice(-6).map(m => ({
+        role: m.role === 'model' ? 'assistant' : 'user',
+        content: m.text
+    }));
+
+    // Add current message
+    contextMessages.push({ role: 'user', content: message });
+
     try {
-        const contents = history.map(m => ({
-            role: m.role === 'model' ? 'model' : 'user',
-            parts: [{ text: m.text }]
-        }));
-        
-        // Add current message
-        contents.push({
-            role: 'user',
-            parts: [{ text: message }]
-        });
-
-        const response = await ai.models.generateContent({
-            model: 'gemini-3-pro-preview',
-            contents: contents,
-            config: {
-                systemInstruction: HERTA_SYSTEM_INSTRUCTION,
-            }
-        });
-
-        return response.text || "";
+        return await callCompletion(contextMessages, settings, false, HERTA_SYSTEM_INSTRUCTION);
     } catch (error: any) {
         return `[System Error]: ${error.message || "Connection to Genius Society Refused."}`;
     }
 };
 
-export const generateRandomCurio = async (): Promise<Curio> => {
-    const prompt = "Generate a fictional, weird, sci-fi 'Curio' or 'Blessing' for the Simulated Universe.";
-    
+// Helper function to robustly extract JSON from a string
+const extractJSON = (text: string): any => {
     try {
-        const response = await ai.models.generateContent({
-            model: 'gemini-3-flash-preview',
-            contents: prompt,
-            config: {
-                systemInstruction: CURIO_SYSTEM_INSTRUCTION,
-                responseMimeType: 'application/json',
-                responseSchema: {
-                    type: Type.OBJECT,
-                    properties: {
-                        name: { type: Type.STRING },
-                        type: { type: Type.STRING, enum: ['Curio', 'Blessing', 'Error'] },
-                        description: { type: Type.STRING },
-                        effect: { type: Type.STRING },
-                        herta_comment: { type: Type.STRING },
-                        rarity: { type: Type.STRING, enum: ['Common', 'Rare', 'Legendary'] },
-                    },
-                    required: ['name', 'type', 'description', 'effect', 'herta_comment', 'rarity'],
-                }
-            }
-        });
+        // 1. Try direct parse
+        return JSON.parse(text);
+    } catch (e) {
+        // 2. Try finding { and } to isolate the object
+        const firstOpen = text.indexOf('{');
+        const lastClose = text.lastIndexOf('}');
         
-        const text = response.text?.trim();
-        if (!text) throw new Error("Empty response");
-        return JSON.parse(text) as Curio;
+        if (firstOpen !== -1 && lastClose !== -1 && lastClose > firstOpen) {
+            const jsonStr = text.substring(firstOpen, lastClose + 1);
+            try {
+                return JSON.parse(jsonStr);
+            } catch (e2) {
+                console.error("Failed to parse extracted JSON substring", e2);
+            }
+        }
+        
+        // 3. Fallback: Try removing markdown code blocks if simple extraction failed
+        const cleanText = text.replace(/```json/g, '').replace(/```/g, '').trim();
+        try {
+            return JSON.parse(cleanText);
+        } catch (e3) {
+            console.error("Failed to parse cleaned JSON", e3);
+        }
+        
+        throw new Error("Response did not contain valid JSON");
+    }
+};
+
+export const generateRandomCurio = async (): Promise<Curio> => {
+    const settings = getSettings();
+    
+    const prompt = "Generate a fictional, weird, sci-fi 'Curio' or 'Blessing' for the Simulated Universe. Return ONLY valid JSON with keys: name, type (Curio/Blessing), description, effect, herta_comment (Must be sarcastic, short, and signed by Herta), rarity (Common/Rare/Legendary). Do not use markdown.";
+
+    try {
+        const responseText = await callCompletion(
+            [{ role: 'user', content: prompt }], 
+            settings, 
+            true, 
+            CURIO_SYSTEM_INSTRUCTION
+        );
+        
+        return extractJSON(responseText) as Curio;
     } catch (e: any) {
         console.error("Curio generation failed", e);
         return {
