@@ -1,3 +1,4 @@
+
 export interface ChatMessage {
     id: string;
     role: 'user' | 'model';
@@ -19,10 +20,4 @@ export interface Curio {
     effect: string;
     herta_comment: string;
     rarity: 'Common' | 'Rare' | 'Legendary';
-}
-
-export interface ChatSettings {
-    endpoint: string;
-    apiKey: string;
-    model: string;
 }
