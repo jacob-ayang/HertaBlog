@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { Calendar, Tag, ChevronRight, ChevronLeft, Hash, Globe, Cpu, Filter, ArrowUp, Sparkles, AlertTriangle, ExternalLink, X, FileText, Lock } from 'lucide-react';
 
 interface BlogPost {
@@ -947,6 +947,7 @@ const HertaBlog: React.FC<HertaBlogProps> = ({ onNavigate }) => {
     
     // Modal State
     const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
+    const modalContentRef = useRef<HTMLDivElement>(null);
 
     // Filter and Sort Logic
     const filteredPosts = useMemo(() => {
@@ -989,14 +990,27 @@ const HertaBlog: React.FC<HertaBlogProps> = ({ onNavigate }) => {
 
     const openModal = (post: BlogPost) => {
         setSelectedPost(post);
-        // Prevent background scrolling
+        // Prevent background scrolling and reset scroll position
         document.body.style.overflow = 'hidden';
+        window.scrollTo({ top: 0, behavior: 'instant' });
     };
 
     const closeModal = () => {
         setSelectedPost(null);
         document.body.style.overflow = 'auto';
     };
+
+    // Scroll modal content to top when opened
+    useEffect(() => {
+        if (selectedPost && modalContentRef.current) {
+            // Use setTimeout to ensure the DOM is fully rendered
+            setTimeout(() => {
+                if (modalContentRef.current) {
+                    modalContentRef.current.scrollTop = 0;
+                }
+            }, 0);
+        }
+    }, [selectedPost]);
 
     return (
         <div className="w-full max-w-6xl mx-auto pb-12 grid grid-cols-1 lg:grid-cols-12 gap-8 animate-fade-in-up relative">
@@ -1029,7 +1043,7 @@ const HertaBlog: React.FC<HertaBlogProps> = ({ onNavigate }) => {
                         </div>
 
                         {/* Scrollable Content */}
-                        <div className="flex-1 overflow-y-auto p-8 custom-scrollbar bg-gradient-to-b from-herta-dark to-black">
+                        <div ref={modalContentRef} className="flex-1 overflow-y-auto p-8 custom-scrollbar bg-gradient-to-b from-herta-dark to-black">
                             <h2 className="text-3xl font-black text-white mb-2 tech-font">{selectedPost.title}</h2>
                             <div className="flex items-center gap-4 text-xs font-mono text-purple-400 mb-8">
                                 <span className="flex items-center gap-1 bg-purple-900/30 px-2 py-1 rounded">
