@@ -1006,15 +1006,15 @@ const HertaBlog: React.FC<HertaBlogProps> = ({ onNavigate }) => {
             
             {/* FULL LOG MODAL */}
             {selectedPost && (
-                <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[9999] w-screen h-screen flex items-center justify-center p-4 bg-black/50 backdrop-blur-md pointer-events-auto">
+                <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/50 backdrop-blur-md">
                     {/* Backdrop */}
                     <div 
-                        className="absolute inset-0 bg-black/80 animate-in fade-in duration-200 -z-10"
+                        className="absolute inset-0 bg-black/80 animate-in fade-in duration-200"
                         onClick={closeModal}
                     ></div>
                     
                     {/* Modal Content */}
-                    <div className="relative w-full max-w-2xl max-h-[90vh] bg-herta-dark border border-purple-500/50 rounded-xl shadow-[0_0_50px_rgba(168,85,247,0.3)] overflow-hidden flex flex-col animate-in zoom-in-95 duration-200 pointer-events-auto">
+                    <div className="relative w-full max-w-2xl max-h-[90vh] bg-herta-dark border border-purple-500/50 rounded-xl shadow-[0_0_50px_rgba(168,85,247,0.3)] overflow-hidden flex flex-col animate-in zoom-in-95 duration-200">
                         {/* Header */}
                         <div className="bg-purple-900/40 p-4 border-b border-purple-500/30 flex items-center justify-between">
                             <div className="flex items-center gap-3">
