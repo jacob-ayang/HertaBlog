@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { Calendar, Tag, ChevronRight, ChevronLeft, Hash, Globe, Cpu, Filter, ArrowUp, Sparkles, AlertTriangle, ExternalLink, X, FileText, Lock } from 'lucide-react';
 
 interface BlogPost {
@@ -1005,7 +1006,7 @@ const HertaBlog: React.FC<HertaBlogProps> = ({ onNavigate }) => {
         <div className="w-full max-w-6xl mx-auto pb-12 grid grid-cols-1 lg:grid-cols-12 gap-8 animate-fade-in-up relative">
             
             {/* FULL LOG MODAL */}
-            {selectedPost && (
+            {selectedPost && createPortal(
                 <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/50 backdrop-blur-md">
                     {/* Backdrop */}
                     <div 
@@ -1062,7 +1063,7 @@ const HertaBlog: React.FC<HertaBlogProps> = ({ onNavigate }) => {
                             </span>
                         </div>
                     </div>
-                </div>
+                </div>, document.body
             )}
 
             {/* Sidebar / Profile - STICKY ONLY ON DESKTOP */}
