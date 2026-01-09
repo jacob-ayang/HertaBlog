@@ -949,6 +949,9 @@ const HertaBlog: React.FC<HertaBlogProps> = ({ onNavigate }) => {
     // Modal State
     const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
     const modalContentRef = useRef<HTMLDivElement>(null);
+    const modalRef = useRef<HTMLDivElement | null>(null);
+    const closeButtonRef = useRef<HTMLButtonElement | null>(null);
+    const lastActiveElementRef = useRef<HTMLElement | null>(null);
 
     // Filter and Sort Logic
     const filteredPosts = useMemo(() => {
@@ -990,6 +993,8 @@ const HertaBlog: React.FC<HertaBlogProps> = ({ onNavigate }) => {
     );
 
     const openModal = (post: BlogPost) => {
+        // remember the element that triggered the modal so we can restore focus
+        lastActiveElementRef.current = document.activeElement as HTMLElement | null;
         setSelectedPost(post);
         // Prevent background scrolling
         document.body.style.overflow = 'hidden';
@@ -998,16 +1003,59 @@ const HertaBlog: React.FC<HertaBlogProps> = ({ onNavigate }) => {
     const closeModal = () => {
         setSelectedPost(null);
         document.body.style.overflow = 'auto';
+        // restore focus to the element that opened the modal
+        setTimeout(() => {
+            lastActiveElementRef.current?.focus?.();
+        }, 0);
     };
 
+    // Keyboard handling + focus trapping while modal is open
+    useEffect(() => {
+        if (!selectedPost) return;
 
+        // focus the close button when modal opens
+        setTimeout(() => {
+            closeButtonRef.current?.focus?.();
+        }, 0);
+
+        const onKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                closeModal();
+                return;
+            }
+
+            if (e.key === 'Tab' && modalRef.current) {
+                const focusable = modalRef.current.querySelectorAll<HTMLElement>(
+                    'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex]:not([tabindex="-1"])'
+                );
+                if (focusable.length === 0) {
+                    e.preventDefault();
+                    return;
+                }
+                const first = focusable[0];
+                const last = focusable[focusable.length - 1];
+
+                if (!e.shiftKey && document.activeElement === last) {
+                    e.preventDefault();
+                    first.focus();
+                } else if (e.shiftKey && document.activeElement === first) {
+                    e.preventDefault();
+                    last.focus();
+                }
+            }
+        };
+
+        document.addEventListener('keydown', onKeyDown);
+        return () => document.removeEventListener('keydown', onKeyDown);
+    }, [selectedPost]);
 
     return (
         <div className="w-full max-w-6xl mx-auto pb-12 grid grid-cols-1 lg:grid-cols-12 gap-8 animate-fade-in-up relative">
             
             {/* FULL LOG MODAL */}
             {selectedPost && createPortal(
-                <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/50 backdrop-blur-md">
+                <div role="dialog" aria-modal="true" aria-labelledby={`modal-title-${selectedPost.id}`} className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/50 backdrop-blur-md">
                     {/* Backdrop */}
                     <div 
                         className="absolute inset-0 bg-black/80 animate-in fade-in duration-200"
@@ -1015,18 +1063,20 @@ const HertaBlog: React.FC<HertaBlogProps> = ({ onNavigate }) => {
                     ></div>
                     
                     {/* Modal Content */}
-                    <div className="relative w-full max-w-2xl max-h-[90vh] bg-herta-dark border border-purple-500/50 rounded-xl shadow-[0_0_50px_rgba(168,85,247,0.3)] overflow-hidden flex flex-col animate-in zoom-in-95 duration-200">
+                    <div ref={modalRef} className="relative w-full max-w-2xl max-h-[90vh] bg-herta-dark border border-purple-500/50 rounded-xl shadow-[0_0_50px_rgba(168,85,247,0.3)] overflow-hidden flex flex-col animate-in zoom-in-95 duration-200 transform transition-all">
                         {/* Header */}
                         <div className="bg-purple-900/40 p-4 border-b border-purple-500/30 flex items-center justify-between">
                             <div className="flex items-center gap-3">
                                 <FileText className="w-5 h-5 text-herta-gold" />
-                                <span className="tech-font text-white font-bold tracking-widest text-lg line-clamp-1">
+                                <span className="tech-font text-white font-bold tracking-widest text-lg line-clamp-1" id={`modal-title-${selectedPost.id}`}>
                                     LOG_VIEWER // {selectedPost.id.toUpperCase()}
                                 </span>
                             </div>
                             <button 
+                                ref={closeButtonRef}
                                 onClick={closeModal}
                                 className="text-purple-400 hover:text-white transition-colors"
+                                aria-label="Close dialog"
                             >
                                 <X className="w-6 h-6" />
                             </button>
@@ -1034,7 +1084,7 @@ const HertaBlog: React.FC<HertaBlogProps> = ({ onNavigate }) => {
 
                         {/* Scrollable Content */}
                         <div ref={modalContentRef} className="flex-1 overflow-y-auto p-8 custom-scrollbar bg-gradient-to-b from-herta-dark to-black">
-                            <h2 className="text-3xl font-black text-white mb-2 tech-font">{selectedPost.title}</h2>
+                            <h2 className="text-3xl font-black text-white mb-2 tech-font" id={`modal-title-${selectedPost.id}`}>{selectedPost.title}</h2>
                             <div className="flex items-center gap-4 text-xs font-mono text-purple-400 mb-8">
                                 <span className="flex items-center gap-1 bg-purple-900/30 px-2 py-1 rounded">
                                     <Calendar className="w-3 h-3" /> {selectedPost.date}
