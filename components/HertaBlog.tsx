@@ -1017,35 +1017,35 @@ const HertaBlog: React.FC<HertaBlogProps> = ({ onNavigate }) => {
             
             {/* FULL LOG MODAL */}
             {selectedPost && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                <div className="fixed inset-0 z-50 flex items-start md:items-center justify-center p-4 overflow-y-auto md:overflow-hidden bg-black/50 backdrop-blur-md">
                     {/* Backdrop */}
                     <div 
-                        className="absolute inset-0 bg-black/80 backdrop-blur-md animate-in fade-in duration-200"
+                        className="hidden md:block fixed inset-0 bg-black/80 animate-in fade-in duration-200 -z-10"
                         onClick={closeModal}
                     ></div>
                     
                     {/* Modal Content */}
-                    <div className="relative w-full max-w-2xl bg-herta-dark border border-purple-500/50 rounded-xl shadow-[0_0_50px_rgba(168,85,247,0.3)] overflow-hidden flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-200">
-                        {/* Header */}
-                        <div className="bg-purple-900/40 p-4 border-b border-purple-500/30 flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                                <FileText className="w-5 h-5 text-herta-gold" />
+                    <div className="relative w-full max-w-2xl bg-herta-dark border border-purple-500/50 rounded-xl shadow-[0_0_50px_rgba(168,85,247,0.3)] overflow-hidden flex flex-col md:max-h-[90vh] my-8 md:my-0 animate-in zoom-in-95 duration-200">
+                        {/* Header - Sticky */}
+                        <div className="sticky top-0 bg-purple-900/40 p-4 md:p-4 border-b border-purple-500/30 flex items-center justify-between flex-shrink-0 z-10">
+                            <div className="flex items-center gap-3 flex-1 min-w-0">
+                                <FileText className="w-5 h-5 text-herta-gold flex-shrink-0" />
                                 <span className="tech-font text-white font-bold tracking-widest text-lg line-clamp-1">
                                     LOG_VIEWER // {selectedPost.id.toUpperCase()}
                                 </span>
                             </div>
                             <button 
                                 onClick={closeModal}
-                                className="text-purple-400 hover:text-white transition-colors"
+                                className="text-purple-400 hover:text-white transition-colors flex-shrink-0 ml-2 p-1"
                             >
                                 <X className="w-6 h-6" />
                             </button>
                         </div>
 
                         {/* Scrollable Content */}
-                        <div ref={modalContentRef} className="flex-1 overflow-y-auto p-8 custom-scrollbar bg-gradient-to-b from-herta-dark to-black">
+                        <div ref={modalContentRef} className="flex-1 overflow-y-auto p-6 md:p-8 custom-scrollbar bg-gradient-to-b from-herta-dark to-black">
                             <h2 className="text-3xl font-black text-white mb-2 tech-font">{selectedPost.title}</h2>
-                            <div className="flex items-center gap-4 text-xs font-mono text-purple-400 mb-8">
+                            <div className="flex items-center gap-4 text-xs font-mono text-purple-400 mb-8 flex-wrap">
                                 <span className="flex items-center gap-1 bg-purple-900/30 px-2 py-1 rounded">
                                     <Calendar className="w-3 h-3" /> {selectedPost.date}
                                 </span>
@@ -1054,7 +1054,7 @@ const HertaBlog: React.FC<HertaBlogProps> = ({ onNavigate }) => {
                                 </span>
                             </div>
                             
-                            <div className="text-purple-100/90 leading-relaxed space-y-4">
+                            <div className="text-purple-100/90 leading-relaxed space-y-4 pb-8">
                                 {selectedPost.fullContent ? selectedPost.fullContent : selectedPost.content}
                                 
                                 {!selectedPost.fullContent && (
@@ -1066,8 +1066,8 @@ const HertaBlog: React.FC<HertaBlogProps> = ({ onNavigate }) => {
                             </div>
                         </div>
 
-                        {/* Footer */}
-                        <div className="p-4 border-t border-purple-500/20 bg-black/40 text-center">
+                        {/* Footer - Sticky */}
+                        <div className="sticky bottom-0 p-4 border-t border-purple-500/20 bg-black/40 text-center flex-shrink-0 z-10">
                             <span className="text-[10px] text-purple-500/50 font-mono tracking-widest">
                                 END OF RECORD // HERTA SPACE STATION ARCHIVE
                             </span>
