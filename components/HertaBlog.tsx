@@ -1006,7 +1006,7 @@ const HertaBlog: React.FC<HertaBlogProps> = ({ onNavigate }) => {
             
             {/* FULL LOG MODAL */}
             {selectedPost && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-md">
+                <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/50 backdrop-blur-md">
                     {/* Backdrop */}
                     <div 
                         className="absolute inset-0 bg-black/80 animate-in fade-in duration-200 -z-10"
